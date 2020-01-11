@@ -5,7 +5,9 @@ from django.contrib.auth.models import User
 from .models import upload, userlog
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
+from django.shortcuts import redirect
 
 
 class loginView(CreateView):
@@ -13,7 +15,7 @@ class loginView(CreateView):
     template_name = 'sparshkalp/login.html'
     success_url = 'upload'
 
-    def form_valid(self, form):        
+    def form_valid(self, form):
         user=form.save()
         user = authenticate(username=user.username, password=user.password)
         if user:
@@ -33,7 +35,12 @@ class loginView(CreateView):
         #     return super(TeamFormationView, self).form_valid(form)
         # return HttpResponse("404")
 
-
+def logout_request(request):
+    if request.user.username != "":
+        print("logged in",request.user.username)
+    logout(request)
+    messages.info(request, "Logged out successfully!")
+    return redirect("index")
 
 class registerView(CreateView):
     form_class = registerForm
