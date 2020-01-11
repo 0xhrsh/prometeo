@@ -5,5 +5,7 @@ from sparshkalp import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^accounts/', include('allauth.urls')),
-    path('login', views.user_login.as_view(), name='login')
+    path('register', views.registerView.as_view(), name='register'),
+    path('upload', views.uploadView.as_view(), name='upload'),
+    path('', views.loginView.as_view(), name=''),
 ]

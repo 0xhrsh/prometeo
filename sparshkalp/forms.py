@@ -1,7 +1,18 @@
 from django import forms
 from django.contrib.auth.models import User
-
-class login(forms.ModelForm):
+from .models import upload, userlog
+class registerForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['username', 'email', 'password']
+
+class loginForm(forms.ModelForm):
+    class Meta:
+        model = userlog
+        fields = ['username', 'password']
+
+
+class uploadForm(forms.ModelForm):
+    class Meta:
+        model = upload
+        fields = ['description']
