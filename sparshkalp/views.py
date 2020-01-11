@@ -1,3 +1,8 @@
 from django.shortcuts import render
+from .forms import login
+from django.views.generic import CreateView
 
-# Create your views here.
+class user_login(CreateView):
+    form_class = login
+    template_name = 'sparshkalp/login.html'
+    success_url = 'login'
