@@ -10,10 +10,8 @@ from django.shortcuts import redirect
 from apiclient.http import MediaFileUpload
 from django.core.files.storage import FileSystemStorage
 from datetime import datetime
-import os
-import shutil
+import os, shutil, time
 from django.contrib.auth.decorators import login_required
-
 
 
 class loginView(CreateView):
@@ -100,11 +98,18 @@ class uploadView(CreateView):
 class giveAccess(CreateView):
     form_class = giveAccessForm
     template_name = 'sparshkalp/doctor.html'
-    success_url = 'index'
+    success_url = 'end'
     #@login_required
     def form_valid(self, form):
-        if self.request.user is not None:
+        if self.request.user is None:
             return redirect("login")
         doctor=form.save()
         doctorId=doctor.doctorId
+        return super(giveAccess, self).form_valid(form)
+
+def takeAccess(request):
+    registered = False
+    if request.method == 'POST':
         return redirect("index")
+    else:
+        return render(request,'sparshkalp/end.html')

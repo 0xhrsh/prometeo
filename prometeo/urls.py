@@ -13,6 +13,7 @@ urlpatterns = [
     path('login', views.loginView.as_view(), name='login'),
     path('', views.giveAccess.as_view(), name='index'),
     path('index', views.giveAccess.as_view(), name='index'),
-
+    url(r'^end/$',views.takeAccess,name='end'),
+    # path('end', views.takeAccess.as_view(), name='end'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

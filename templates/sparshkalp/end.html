@@ -1,0 +1,22 @@
+{% extends 'sparshkalp/base.html' %}
+{% block body_block %}
+{% load static %}
+<div class="limiter">
+    <div class="container-login100">
+      <div class="wrap-login100 p-l-50 p-r-50 p-t-77 p-b-30">
+        <form enctype="multipart/form-data" method="POST" action="{% url 'index' %}" class="login100-form validate-form">
+          {% csrf_token %}
+          <span class="login100-form-title p-b-55">
+            End Access
+          </span>
+          <div class="container-login100-form-btn p-t-25">
+            <button class="login100-form-btn">
+             Stop Sharing
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
