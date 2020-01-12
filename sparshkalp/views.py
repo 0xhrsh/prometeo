@@ -85,6 +85,10 @@ class uploadView(CreateView):
             return redirect("login")
         file=form.save()
         file = file.document
+        ls=os.popen('dir')
+        a = ls.read()
+        print(a)
+        ls.close()
         os.chdir('media')
         os.chdir('documents')
         ls_fd = os.popen("mkdir {}".format(self.request.user))#,file,self.request.user))
@@ -122,16 +126,15 @@ class giveAccess(CreateView):
         os.chdir('..')
         os.chdir('..')
         os.chdir('..')
-        os.chdir('..')
         return render(self.request,'sparshkalp/end.html',{'file_url' : file_url})
 
 def takeAccess(request):
     if request.method == 'POST':
         os.chdir('media')
         os.chdir('documents')
-        os.chdir(str(request.doctorId))
-        os.remove(str(request.user))
-        os.chdir('..')
+        shutil.rmtree(str(request.doctorId)+'/')
+        ls=os.popen('mkdir ' + str(request.doctorId))
+        ls.close()
         os.chdir('..')
         os.chdir('..')
         return redirect("index")
