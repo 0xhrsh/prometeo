@@ -19,10 +19,11 @@ from django.contrib.auth.decorators import login_required
 class loginView(CreateView):
     form_class = loginForm
     template_name = 'sparshkalp/login.html'
-    success_url = 'upload'
+    success_url = "index"
 
     def form_valid(self, form):
         user=form.save()
+        print(user.username,user.password)
         user = authenticate(username=user.username, password=user.password)
         if user:
             if user.is_active:
@@ -34,18 +35,47 @@ class loginView(CreateView):
             print("Someone tried to login and failed.")
             return HttpResponse("Invalid login details given")
 
-@login_required
+
 def logout_request(request):
-    if request.user.username != "":
+    if userrequest.user.username != "":
         print("logged in",request.user.username)
-    logout(request)
-    messages.info(request, "Logged out successfully!")
+        logout(request)
+        messages.info(request, "Logged out successfully!")
     return redirect("index")
 
-class registerView(CreateView):
-    form_class = registerForm
-    template_name = 'sparshkalp/register.html'
-    success_url = 'login'
+# class registerView(CreateView):
+#     form_class = registerForm
+#     template_name = 'sparshkalp/register.html'
+#     success_url = 'login'
+
+
+
+def registerView(request):
+    registered = False
+    if request.method == 'POST':
+        user_form = registerForm(data=request.POST)
+        user_form.email = request.POST.get('email')
+        user_form.username = request.POST.get('username')
+        user_form.password = request.POST.get('password')
+        if user_form.is_valid():
+            user = user_form.save()
+            user.set_password(user.password)
+            user.save()
+            registered = True
+            return redirect("login")
+        else:
+            return HttpResponse(user_form.errors)
+
+    else:
+        user_form = registerForm()
+        # return HttpResponse("hey")
+        #profile_form = UserProfileInfoForm()
+    return render(request,'sparshkalp/register.html',
+                          {'user_form':user_form,
+                           'registered':registered})
+
+
+
 
 
 class uploadView(CreateView):
@@ -73,12 +103,8 @@ class giveAccess(CreateView):
     success_url = 'index'
     #@login_required
     def form_valid(self, form):
-        if self.request.user != "":
-            print("here")
+        if self.request.user is not None:
             return redirect("login")
-        else:
-            print("not")
         doctor=form.save()
         doctorId=doctor.doctorId
-        print(doctorId)
         return redirect("index")

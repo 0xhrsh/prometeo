@@ -1,10 +1,17 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import upload, userlog
+from .models import upload, userlog, doc
+# class registerForm(forms.ModelForm):
+#     class Meta:
+#         model = User
+#         fields = ['username', 'email', 'password']
+
 class registerForm(forms.ModelForm):
-    class Meta:
-        model = User
-        fields = ['username', 'email', 'password']
+	password = forms.CharField(widget=forms.PasswordInput())
+	class Meta():
+		model = User
+		fields = ('email','username','password')
+
 
 class loginForm(forms.ModelForm):
     class Meta:
@@ -19,5 +26,5 @@ class uploadForm(forms.ModelForm):
 
 class giveAccessForm(forms.ModelForm):
     class Meta:
-        model = userlog
+        model = doc
         fields = ['doctorId']

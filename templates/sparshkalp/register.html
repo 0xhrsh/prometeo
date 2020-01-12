@@ -4,28 +4,28 @@
 <div class="limiter">
     <div class="container-login100">
       <div class="wrap-login100 p-l-50 p-r-50 p-t-77 p-b-30">
-        <form method="post">
+        <form enctype="multipart/form-data" method="POST" class="login100-form validate-form">
           {% csrf_token %}
           <span class="login100-form-title p-b-55">
             Sign Up!
           </span>
+          <!-- {{form}} -->
 
-          <div class="wrap-input100 validate-input m-b-16">
-            <input class="input100" type="text" type="text"name="username" placeholder="Username">
-            <span class="focus-input100"></span>
-            <span class="symbol-input100">
-              <span class="lnr lnr-envelope"></span>
-            </span>
-          </div>
+                    <div class="wrap-input100 validate-input m-b-16">
+                      <input class="input100" type="email" name="email" placeholder="Email">
+                      <span class="focus-input100"></span>
+                      <span class="symbol-input100">
+                        <span class="lnr lnr-lock"></span>
+                      </span>
+                    </div>
 
-          <div class="wrap-input100 validate-input m-b-16">
-            <input class="input100" type="email" type="email"name="email" placeholder="Email">
-            <span class="focus-input100"></span>
-            <span class="symbol-input100">
-              <span class="lnr lnr-envelope"></span>
-            </span>
-          </div>
-
+                    <div class="wrap-input100 validate-input m-b-16">
+                                <input class="input100" type="text" type="text"name="username" placeholder="Username">
+                                <span class="focus-input100"></span>
+                                <span class="symbol-input100">
+                                  <span class="lnr lnr-envelope"></span>
+                                </span>
+                              </div>
           <div class="wrap-input100 validate-input m-b-16">
             <input class="input100" type="password" name="password" placeholder="Password">
             <span class="focus-input100"></span>
@@ -33,11 +33,13 @@
               <span class="lnr lnr-lock"></span>
             </span>
           </div>
+          
           <div class="container-login100-form-btn p-t-25">
             <button class="login100-form-btn">
-              Register
+             SignUp
             </button>
           </div>
+
         </form>
       </div>
     </div>
