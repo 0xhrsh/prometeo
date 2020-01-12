@@ -35,7 +35,7 @@ class loginView(CreateView):
 
 
 def logout_request(request):
-    if userrequest.user.username != "":
+    if request.user.username != "":
         print("logged in",request.user.username)
         logout(request)
         messages.info(request, "Logged out successfully!")
@@ -80,14 +80,13 @@ class uploadView(CreateView):
     form_class = uploadForm
     template_name = 'sparshkalp/upload.html'
     success_url = 'upload'
-    @login_required
     def form_valid(self, form):
         file=form.save()
         file = file.document
         os.chdir('media')
         os.chdir('documents')
         ls_fd = os.popen("mkdir {}".format(self.request.user))#,file,self.request.user))
-        shutil.move(str(file)[10:],"{}/".format(self.request.user))#+str(file)[10:])
+        shutil.move(str(file)[10:],"{}/".format(self.request.user)+str(file)[10:])
         output = ls_fd.read()
         print(output)
         os.chdir('..')
@@ -101,15 +100,61 @@ class giveAccess(CreateView):
     success_url = 'end'
     #@login_required
     def form_valid(self, form):
-        if self.request.user is None:
+        if self.request.user.username == "":
             return redirect("login")
+        print(self.request.user)
         doctor=form.save()
         doctorId=doctor.doctorId
-        return super(giveAccess, self).form_valid(form)
+        os.chdir('media')
+        os.chdir('documents')
+        ls=os.popen('mkdir ' + str(self.request.user))
+        ls.close()
+        os.chdir(str(self.request.user))
+        source = os.getcwd()
+        os.chdir('..')
+        ls=os.popen('mkdir ' + str(doctorId))
+        ls.close()
+        os.chdir(str(doctorId))
+        destination = os.getcwd()
+        file_url = shutil.move(source, destination, copy_function = shutil.copytree)
+        os.chdir('..')
+        os.chdir('..')
+        os.chdir('..')
+        os.chdir('..')
+        return render(self.request,'sparshkalp/end.html',{'file_url' : file_url})
 
 def takeAccess(request):
-    registered = False
     if request.method == 'POST':
+        os.chdir('media')
+        os.chdir('documents')
+        os.chdir(str(request.doctorId))
+        os.remove(str(request.user))
+        os.chdir('..')
+        os.chdir('..')
+        os.chdir('..')
         return redirect("index")
     else:
-        return render(request,'sparshkalp/end.html')
+        os.chdir('media')
+        os.chdir('documents')
+
+        os.chdir(str(request.user))
+        file_url =str(os.getcwd())
+        os.chdir('..')
+        os.chdir('..')
+        os.chdir('..')
+        #module_dir = os.path.dirname(__file__)  # get current directory
+        #file_url = os.path.join(file_url, 'changelog.txt')
+        return render(request,'sparshkalp/end.html',{'file_url' : file_url})
+
+
+def viewRecords(request):
+    fs = FileSystemStorage()
+    os.chdir('media')
+    os.chdir('documents')
+    os.chdir(str(request.user))
+    file_url =os.getcwd()
+    os.chdir('..')
+    os.chdir('..')
+    os.chdir('..')
+    return render(request,'sparshkalp/end.html',{'file_url' : file_url})
+    #return render(request,str(os.getcwd())

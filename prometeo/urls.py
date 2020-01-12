@@ -14,6 +14,8 @@ urlpatterns = [
     path('', views.giveAccess.as_view(), name='index'),
     path('index', views.giveAccess.as_view(), name='index'),
     url(r'^end/$',views.takeAccess,name='end'),
-    # path('end', views.takeAccess.as_view(), name='end'),
+
+    url(r'^view/$',views.viewRecords,name='view'),
+
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
