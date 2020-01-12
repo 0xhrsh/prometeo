@@ -81,6 +81,8 @@ class uploadView(CreateView):
     template_name = 'sparshkalp/upload.html'
     success_url = 'upload'
     def form_valid(self, form):
+        if self.request.user.username == "":
+            return redirect("login")
         file=form.save()
         file = file.document
         os.chdir('media')
