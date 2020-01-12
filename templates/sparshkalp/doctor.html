@@ -23,16 +23,25 @@
               Give Access
             </button>
           </div>
-          <div class="text-center w-full p-t-115">
-            <span class="txt1">
-              Not a member?
-            </span>
 
-            <a class="txt1 bo1 hov1" href="{% url 'register' %}">
-              Sign up now
-            </a>
-          </div>
+
         </form>
+        <form method="GET" action ="{% url 'upload' %}" >
+        <div class="container-login100-form-btn p-t-25">
+          <button method="submit" class="login100-form-btn" value="Submit">
+            Upload Documents
+          </button>
+        </div>
+        </form>
+        <div class="text-center w-full p-t-115">
+          <span class="txt1">
+            Not a member?
+          </span>
+
+          <a class="txt1 bo1 hov1" href="{% url 'register' %}">
+            Sign up now
+          </a>
+        </div>
       </div>
     </div>
   </div>
