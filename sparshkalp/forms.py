@@ -15,4 +15,9 @@ class loginForm(forms.ModelForm):
 class uploadForm(forms.ModelForm):
     class Meta:
         model = upload
-        fields = ['description']
+        fields = ['description','document',]
+
+class giveAccessForm(forms.ModelForm):
+    class Meta:
+        model = userlog
+        fields = ['doctorId']

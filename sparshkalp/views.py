@@ -1,13 +1,19 @@
 from django.shortcuts import render
-from .forms import loginForm, registerForm, uploadForm
+from .forms import loginForm, registerForm, uploadForm, giveAccessForm
 from django.views.generic import CreateView
 from django.contrib.auth.models import User
 from .models import upload, userlog
-from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.shortcuts import redirect
+from apiclient.http import MediaFileUpload
+from django.core.files.storage import FileSystemStorage
+from datetime import datetime
+import os
+import shutil
+from django.contrib.auth.decorators import login_required
+
 
 
 class loginView(CreateView):
@@ -27,14 +33,8 @@ class loginView(CreateView):
         else:
             print("Someone tried to login and failed.")
             return HttpResponse("Invalid login details given")
-        # user = self.request.user
-        # if user is not None:
-        #     team = form.save()
-        #     team.captian = get_object_or_404(UserProfile, user=user)
-        #     # TeamFormationView.create_team(team, **form.cleaned_data)
-        #     return super(TeamFormationView, self).form_valid(form)
-        # return HttpResponse("404")
 
+@login_required
 def logout_request(request):
     if request.user.username != "":
         print("logged in",request.user.username)
@@ -52,3 +52,33 @@ class uploadView(CreateView):
     form_class = uploadForm
     template_name = 'sparshkalp/upload.html'
     success_url = 'upload'
+    @login_required
+    def form_valid(self, form):
+        file=form.save()
+        file = file.document
+        os.chdir('media')
+        os.chdir('documents')
+        ls_fd = os.popen("mkdir {}".format(self.request.user))#,file,self.request.user))
+        shutil.move(str(file)[10:],"{}/".format(self.request.user))#+str(file)[10:])
+        output = ls_fd.read()
+        print(output)
+        os.chdir('..')
+        os.chdir('..')
+        ls_fd.close()
+        return redirect("index")
+
+class giveAccess(CreateView):
+    form_class = giveAccessForm
+    template_name = 'sparshkalp/doctor.html'
+    success_url = 'index'
+    #@login_required
+    def form_valid(self, form):
+        if self.request.user != "":
+            print("here")
+            return redirect("login")
+        else:
+            print("not")
+        doctor=form.save()
+        doctorId=doctor.doctorId
+        print(doctorId)
+        return redirect("index")

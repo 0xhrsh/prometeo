@@ -1,15 +1,21 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-  </head>
-  <body>
-    upload files here
-    <form action={% url 'logout' %} method="get" id="form1">
-  <button type="submit" value="logout">logout</button>
-</form>
-
-
-  </body>
-</html>
+{% extends 'sparshkalp/base.html' %}
+{% block body_block %}
+{% load static %}
+<div class="limiter">
+    <div class="container-login100">
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <!-- <a class="btn-floating btn-lg pink lighten-1 mt-0 float-left">
+      <i class="fas fa-paperclip" aria-hidden="true"></i>
+      <input type="file" name="f1" >
+    </a>
+    <br> -->
+    {{form}}
+    <button type="submit" class="login100-form-btn">Upload</button>
+  </form>
+  {% if uploaded_file_url %}
+    <p>File uploaded!</p>
+    <!--<a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a>-->
+  {% endif %}
+</div>
+{% endblock %}
